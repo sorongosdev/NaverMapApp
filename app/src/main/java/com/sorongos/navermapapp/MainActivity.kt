@@ -69,5 +69,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val cameraUpdate = CameraUpdate.scrollTo(LatLng(37.2974, 126.8356))
             .animate(CameraAnimation.Easing)
         naverMap.moveCamera(cameraUpdate)
+
     }
 }
