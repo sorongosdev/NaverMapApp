@@ -8,3 +8,5 @@
 - ![img.png](img.png)
 - meta-data
   * 상위 구성요소에 제공될 수 있는 추가 임의 데이터 항목의 이름-값 쌍
+- 발생할 수 있는 에러
+![img_1.png](img_1.png)
