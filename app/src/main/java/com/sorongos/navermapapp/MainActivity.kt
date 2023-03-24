@@ -2,12 +2,16 @@ package com.sorongos.navermapapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.sorongos.navermapapp.databinding.ActivityMainBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMainBinding
@@ -23,6 +27,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.mapView.getMapAsync(this)
 
         //Can change mapType.
+
+        //객체
+        SearchRepository.getGoodRestaurant("서울").enqueue(object: Callback<SearchResult>{
+            override fun onResponse(call: Call<SearchResult>, response: Response<SearchResult>) {
+                Log.e("Response","${response.body().toString()}")
+            }
+
+            override fun onFailure(call: Call<SearchResult>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     override fun onStart() {
