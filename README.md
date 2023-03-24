@@ -3,6 +3,9 @@
 
 ## 키워드
 - 비로그인 방식 오픈 API : (https://developers.naver.com/docs/common/openapiguide/)
+- Gson 대신 Moshi
+  * Retrofit은 Moshi를 지원
+  * ![img_9.png](img_9.png)
 - CoordinatorLayout
 - 네이버 ncloud 콘솔에 앱 등록
 - ![img.png](img.png)
