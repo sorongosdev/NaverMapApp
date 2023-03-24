@@ -10,6 +10,7 @@
 - 네이버 ncloud 콘솔에 앱 등록
 - ![img.png](img.png)
 - 지도 마커
+  ![img_10.png](img_10.png) 
 - meta-data
   * 상위 구성요소에 제공될 수 있는 추가 임의 데이터 항목의 이름-값 쌍
 - 발생할 수 있는 에러
@@ -28,5 +29,4 @@
         ![img_7.png](img_7.png)
     - params
         ![img_8.png](img_8.png)
-  
 
