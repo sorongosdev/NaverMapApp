@@ -2,17 +2,22 @@ package com.sorongos.navermapapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
 import com.sorongos.navermapapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var 
+    private lateinit var naverMap : NaverMap
+    private var isMapInit = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.mapView.onCreate(savedInstanceState)
+
+        binding.mapView.getMapAsync(this)
     }
 
     override fun onStart() {
@@ -48,5 +53,12 @@ class MainActivity : AppCompatActivity() {
     override fun onLowMemory() {
         super.onLowMemory()
         binding.mapView.onLowMemory()
+    }
+
+    /**지도 호출시 호출*/
+    override fun onMapReady(mapObject: NaverMap) {
+        naverMap = mapObject
+        isMapInit = true
+        //can use move camera...etc, after getting object here.
     }
 }
