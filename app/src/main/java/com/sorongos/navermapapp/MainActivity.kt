@@ -29,6 +29,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.mapView.getMapAsync(this)
 
+        //include viewBinding
+        binding.bottomSheetLayout.searchResultRecyclerView
+
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return if (query?.isNotEmpty() == true) {

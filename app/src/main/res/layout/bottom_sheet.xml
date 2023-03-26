@@ -8,14 +8,41 @@
     app:behavior_hideable="false"
     app:behavior_expandedOffset="100dp"
     app:behavior_fitToContents="false"
-    android:background="@color/white"
+    android:background="@drawable/bottom_sheet_background"
     >
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="2dp"
+        android:background="@color/gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="대동마라지도"
+        android:textSize="18sp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/bottomSheetTitleView"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchResultRecyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/bottomSheetTitleView"
+        android:layout_width="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="aaaa"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
