@@ -1,5 +1,6 @@
 package com.sorongos.navermapapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -37,8 +38,10 @@ class RestaurantListAdapter(private val onClick: (LatLng) -> Unit) :
         holder.bind(dataSet[position])
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(dataSet: List<SearchItem>){
         this.dataSet = dataSet
+        notifyDataSetChanged()
     }
 
 }

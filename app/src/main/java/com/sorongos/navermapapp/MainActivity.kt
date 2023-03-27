@@ -6,6 +6,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.Tm128
 import com.naver.maps.map.CameraAnimation
@@ -23,9 +25,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private var isMapInit = false
 
-    private var restaurantListAdapter = RestaurantListAdapter{
+    private var restaurantListAdapter = RestaurantListAdapter {
+        //close modal at first
+        collapseBottomSheet()
         moveCamera(it)
     }
+
+    private var markers = emptyList<Marker>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -36,7 +43,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.mapView.getMapAsync(this)
 
         //include viewBinding
-        binding.bottomSheetLayout.searchResultRecyclerView.apply{
+        binding.bottomSheetLayout.searchResultRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = restaurantListAdapter
         }
@@ -58,7 +65,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                         "검색 결과 없음",
                                         Toast.LENGTH_SHORT
                                     ).show()
-                                    Log.e("searchItemList","검색 결과 없음")
+                                    Log.e("searchItemList", "검색 결과 없음")
 
                                     return
                                 }
@@ -66,13 +73,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 else if (isMapInit.not()) {
                                     Toast.makeText(this@MainActivity, "오류 발생", Toast.LENGTH_SHORT)
                                         .show()
-                                    Log.e("isMapInit","오류 발생")
+                                    Log.e("isMapInit", "오류 발생")
 
                                     return
                                 }
 
+                                //marker init when searching again
+                                markers.forEach {
+                                    it.map = null
+                                }
+
                                 //marker
-                                val markers = searchItemList.map {
+                                markers = searchItemList.map {
                                     Marker(
                                         Tm128(
                                             it.mapx.toDouble(),
@@ -84,13 +96,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                     }
                                 }
 
-                                Log.e("markers",markers.toString())
+                                Log.e("markers", markers.toString())
 
                                 // move camera to the first result
                                 // markers.first().position : non-nullable, already checked
                                 restaurantListAdapter.setData(searchItemList)
-                                restaurantListAdapter.notifyItemRangeChanged(0,searchItemList.size)
-
+//                                restaurantListAdapter.notifyItemRangeChanged(0,searchItemList.size)
+                                collapseBottomSheet()
                                 moveCamera(markers.first().position)
                             }
 
@@ -114,12 +126,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //Can change mapType.
     }
 
-    fun moveCamera(position: LatLng){
-        if(isMapInit.not()) return
+    fun moveCamera(position: LatLng) {
+        if (isMapInit.not()) return
 
         val cameraUpdate = CameraUpdate.scrollTo(position)
             .animate(CameraAnimation.Easing)
         naverMap.moveCamera(cameraUpdate)
+    }
+
+    private fun collapseBottomSheet() {
+        val bottomSheetBehavior = BottomSheetBehavior.from(binding.bottomSheetLayout.root)
+        bottomSheetBehavior.state = STATE_COLLAPSED
     }
 
     override fun onStart() {
