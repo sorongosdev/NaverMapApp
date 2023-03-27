@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var restaurantListAdapter = RestaurantListAdapter {
         //close modal at first
         collapseBottomSheet()
-        moveCamera(it)
+        moveCamera(it,17.0)
     }
 
     private var markers = emptyList<Marker>()
@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 restaurantListAdapter.setData(searchItemList)
 //                                restaurantListAdapter.notifyItemRangeChanged(0,searchItemList.size)
                                 collapseBottomSheet()
-                                moveCamera(markers.first().position)
+                                moveCamera(markers.first().position, 14.0)
                             }
 
                             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
@@ -126,10 +126,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         //Can change mapType.
     }
 
-    fun moveCamera(position: LatLng) {
+    //Move camera when click the recyclerview item
+    fun moveCamera(position: LatLng, zoomLevel: Double) {
         if (isMapInit.not()) return
 
-        val cameraUpdate = CameraUpdate.scrollTo(position)
+        val cameraUpdate = CameraUpdate.scrollAndZoomTo(position, zoomLevel)
             .animate(CameraAnimation.Easing)
         naverMap.moveCamera(cameraUpdate)
     }
