@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.naver.maps.geometry.LatLng
 import com.naver.maps.geometry.Tm128
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var isMapInit = false
 
     private var restaurantListAdapter = RestaurantListAdapter{
-
+        moveCamera(it)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,9 +91,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 restaurantListAdapter.setData(searchItemList)
                                 restaurantListAdapter.notifyItemRangeChanged(0,searchItemList.size)
 
-                                val cameraUpdate = CameraUpdate.scrollTo(markers.first().position)
-                                    .animate(CameraAnimation.Easing)
-                                naverMap.moveCamera(cameraUpdate)
+                                moveCamera(markers.first().position)
                             }
 
                             override fun onFailure(call: Call<SearchResult>, t: Throwable) {
@@ -113,6 +112,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         })
 
         //Can change mapType.
+    }
+
+    fun moveCamera(position: LatLng){
+        if(isMapInit.not()) return
+
+        val cameraUpdate = CameraUpdate.scrollTo(position)
+            .animate(CameraAnimation.Easing)
+        naverMap.moveCamera(cameraUpdate)
     }
 
     override fun onStart() {
