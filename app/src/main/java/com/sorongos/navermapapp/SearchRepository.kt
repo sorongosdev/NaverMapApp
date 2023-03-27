@@ -33,7 +33,7 @@ object SearchRepository {
 
     /**뷰에서 받아온 쿼리*/
     fun getGoodRestaurant(query: String): Call<SearchResult>{
-        return service.getGoodRestaurant(query = "$query 맛집", display = 5)
+        return service.getGoodRestaurant(query = "$query 마라탕", display = 5)
     }
 
     /**interceptor은 interface이기 때문에 구현이 필요*/

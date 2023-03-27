@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.naver.maps.geometry.Tm128
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
@@ -20,6 +21,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMainBinding
     private lateinit var naverMap: NaverMap
     private var isMapInit = false
+
+    private var restaurantListAdapter = RestaurantListAdapter{
+
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -30,7 +35,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.mapView.getMapAsync(this)
 
         //include viewBinding
-//        binding.bottomSheetLayout.searchResultRecyclerView
+        binding.bottomSheetLayout.searchResultRecyclerView.apply{
+            layoutManager = LinearLayoutManager(context)
+            adapter = restaurantListAdapter
+        }
 
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -79,6 +87,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
                                 // move camera to the first result
                                 // markers.first().position : non-nullable, already checked
+                                restaurantListAdapter.setData(searchItemList)
+                                restaurantListAdapter.notifyItemRangeChanged(0,searchItemList.size)
+
                                 val cameraUpdate = CameraUpdate.scrollTo(markers.first().position)
                                     .animate(CameraAnimation.Easing)
                                 naverMap.moveCamera(cameraUpdate)
